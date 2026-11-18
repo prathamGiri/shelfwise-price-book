@@ -1,0 +1,67 @@
+{
+  "name": "Shelfwise",
+  "slug": "shelfwise-price-book",
+  "tagline": "Your pocket price book: know in two seconds if that shelf price is a real deal, based on what you've actually paid.",
+  "problem": "Frugal shoppers say the only way to know a real deal is to keep a 'price book' of unit prices across stores, but most still use paper or spreadsheets because, as one guide puts it, there isn't an app that makes price-book tracking easy. The apps that do exist are mostly iOS-only, ad-supported or subscription-based (the top 'Price Book' app averages ~3 stars), and none give a fast in-aisle verdict. Shrinkflation makes this worse: package sizes shrink while the price stays the same, so you only catch it by comparing unit prices.",
+  "evidence": [
+    {
+      "source": "https://thedollarstretcher.com/frugal-living/food/digital-grocery-price-book-solutions-and-apps/",
+      "note": "Says there isn't a grocery price-book app that automates tracking well and recommends a spreadsheet instead; the author uses a Google Sheet alongside an app."
+    },
+    {
+      "source": "https://apps.apple.com/us/app/price-book-track-grocery-price/id1431720584",
+      "note": "The best-known price-book app is iOS-only, ad-supported with in-app purchases, and has about 3.0 stars from 28 ratings: clear room for a clean, offline, ad-free option."
+    },
+    {
+      "source": "https://apps.apple.com/us/app/-/id6473100414",
+      "note": "Price Logger needs a subscription and the cloud just to highlight the best unit price, so even this simple feature sits behind recurring fees."
+    },
+    {
+      "source": "https://moneysmartfamily.com/price-tracker-sheet/",
+      "note": "Price-tracker guides tell people to watch unit prices to catch shrinkflation, and most still hand out printable or spreadsheet sheets."
+    },
+    {
+      "source": "https://www.moneycrashers.com/making-grocery-price-book/",
+      "note": "Says the only way to get the best price on every item is to track prices across multiple stores, which people do by hand today."
+    },
+    {
+      "source": "https://www.vertex42.com/ExcelTemplates/grocery-price-book.html",
+      "note": "Popular Excel price-book template with a unit-price calculator, which shows demand for unit-price math that people currently do in spreadsheets."
+    }
+  ],
+  "target_users": "Budget-conscious households, frugal-living and r/personalfinance types, students, and families who shop at 2-4 stores (supermarket, discount grocer, warehouse club) and want to know when to stock up and where each staple is cheapest.",
+  "core_features": [
+    "Deal Check (the hook): on a big, thumb-friendly screen, pick or type a product, enter shelf price, package size and unit (g/kg/oz/lb/ml/L/fl oz/count). You instantly get a normalized unit price (e.g. $0.42/100g) and a color-coded verdict against your own history: 'STOCK UP' (at or below your best-ever price, or 15%+ below your average), 'GOOD' (below average), 'FAIR' (within \u00b15% of average) or 'SKIP' (above average). It also shows how much this price is above or below your best price and which store had that best price. One tap logs the price.",
+    "Price book: a list of products, each with a category, preferred unit family (weight, volume or count) and full price history (store, price, size, date, sale flag). Each product shows best/average/latest unit price, a small inline SVG sparkline of unit price over time, and a per-store breakdown ranking stores from cheapest to most expensive.",
+    "Automatic unit conversion and comparison: it converts between metric and imperial within a unit family, so a 1 lb bag and a 500 g bag compare correctly. A Quick Compare mode (no saving) compares 2-4 package options side by side, e.g. 'Is the 3-pack or the jumbo cheaper per unit?', and highlights the winner and how much cheaper it is in percent.",
+    "Shrinkflation alerts: if a new entry for the same product and store has a smaller package size than the previous entry at the same or higher price, the app flags it with a shrink badge and shows the hidden price increase in percent. A 'Shrink Watch' list collects every flagged item.",
+    "Smart shopping list: add products to a list, and it groups them by the store where each is historically cheapest. It shows an estimated total per store and the estimated savings versus buying everything at your usual store. You can check items off, and 'Share list' sends plain text via the native share bridge.",
+    "Stores and data management: manage stores (name and color tag), search and filter by category, favorite staples, and use backup/restore through JSON export/import (copy to clipboard or share text). Choose a currency symbol in settings."
+  ],
+  "screens": [
+    "Deal Check (home): product search/autocomplete, price, size and unit inputs, store chips, a large verdict card with unit price, comparison to best and average, and a 'Log price' button; also a recent-checks strip",
+    "Price Book: searchable list of products with category filter chips, each row showing best unit price, cheapest store and a trend arrow; FAB to add a product",
+    "Product Detail: stats (best/avg/latest unit price), unit-price sparkline, per-store ranking bars, full history list with edit/delete, shrink badges, and an 'Add to list' button",
+    "Quick Compare: 2-4 package cards (price, size, unit) with live unit prices and a highlighted winner, no saving required",
+    "Shopping List: items grouped by cheapest store with per-store subtotals, an estimated-savings banner, checkboxes, clear-checked, and share",
+    "Shrink Watch: list of products flagged for shrinkflation with old size vs new size and the effective price increase",
+    "Settings: currency symbol, default store, manage stores (add/rename/color/delete), manage categories, export/import JSON backup, reset data, and a 'load sample data' option for first-time users"
+  ],
+  "data_model": "localStorage key 'shelfwise.v1' holds one JSON object: { settings: {currency:'$', defaultStoreId, verdictThresholds:{stockUpPct:15, fairPct:5}}, stores: [{id, name, color}], categories: [string], products: [{id, name, category, unitFamily:'weight'|'volume'|'count', favorite:bool, createdAt}], entries: [{id, productId, storeId, price:number, size:number, unit:'g'|'kg'|'oz'|'lb'|'ml'|'l'|'floz'|'ct', onSale:bool, date:'YYYY-MM-DD', shrinkFlag:bool}], list: [{productId, qty, checked}], recentChecks: [{productId, unitPrice, verdict, ts}] }. Unit prices are computed on the fly: price divided by size converted to a base unit (grams, millilitres or count) and shown per 100g/100ml/1kg/1L/oz/lb/each according to user preference.",
+  "design": {
+    "bg": "#F6F3EC",
+    "accent": "#1F7A5A",
+    "vibe": "Warm paper-ledger feel, like a modern receipt or price tag: an off-white background, deep green accent, and monospace numerals (tabular figures) for all prices. Verdict cards use bold color blocks: STOCK UP in deep green, GOOD in teal, FAIR in amber (#D9A23B) and SKIP in brick red (#C4483C), with large type readable at arm's length in a store aisle. Rounded 14px cards, subtle dashed 'receipt tear' dividers, bottom tab bar (Check, Book, List, More), and generous touch targets for one-handed use. Optional dark mode (#15171A bg) via settings."
+  },
+  "test_scenarios": [
+    "First launch with no data shows an empty state with 'Load sample data'. Tapping it fills about 8 products, 3 stores and history, and the Price Book lists them with best unit prices.",
+    "Deal Check verdict: create 'Peanut Butter' (weight) with entries of $3.99/16oz at Store A and $4.49/16oz at Store B. On Deal Check, enter $3.49 for 16oz at Store B and verify the verdict is STOCK UP, the unit price shows correctly, and the card says it beats the best price ($3.99 at Store A) by about 12.5%. Enter $4.79 for 16oz and verify SKIP.",
+    "Unit conversion: log Rice at $2.00 for 1 lb, then enter $2.10 for 500 g in Deal Check. Verify the unit prices are normalized (1 lb \u2248 453.6 g, so $0.441/100g vs $0.420/100g) and the 500 g option counts as cheaper.",
+    "Shrinkflation: log Cereal at Store A for $4.29 / 18 oz, then log Cereal at Store A for $4.29 / 15.5 oz. Verify the new entry gets a shrink badge, shows about a 16% hidden price increase, and appears in Shrink Watch.",
+    "Quick Compare: enter $5.99/24ct and $8.49/36ct and $1.29/4ct. Verify the 36ct option is highlighted as the winner with correct per-each prices and percent savings, and verify nothing is saved to the price book.",
+    "Shopping list: add three products whose cheapest stores differ. Verify the list groups them under the correct stores with subtotals and a savings estimate, that checking an item strikes it through, and that Share sends the formatted text via the bridge (or a fallback toast in a browser).",
+    "Persistence: add a product and an entry, reload the page, and verify all data, the list and settings persist. Export JSON, reset data, import the JSON, and verify everything is restored exactly.",
+    "Editing: edit an entry's price on Product Detail and verify best/avg stats, the sparkline and Deal Check verdicts update; delete the entry and verify the stats recalculate; delete a store and verify its entries are handled (reassigned to 'Unknown store' or confirmed for deletion).",
+    "Validation: try to log a price with an empty or zero size or a negative price and verify inline errors and no crash. Mixing families (a volume unit for a weight product) should be blocked with a clear message."
+  ]
+}
